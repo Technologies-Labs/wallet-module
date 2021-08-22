@@ -1,13 +1,14 @@
 <?php
 namespace Modules\WalletModule\Services;
 
+use Illuminate\Support\Facades\Auth;
 use Modules\WalletModule\Entities\Wallet;
 
 class WalletService{
 
- //class attributes
     public $user_id;
     public $balance;
+    public $user;
 
     public function createWallet()
     {
@@ -17,6 +18,16 @@ class WalletService{
                 'balance'  =>$this->balance,
             ]
         );
+    }
+    public function getCurrentWallet()
+    {
+        $user = Auth::user();
+        return $user->wallet;
+    }
+
+    public function getUserWallet($user)
+    {
+        return $user->wallet;
     }
 
     public function updateWallet(Wallet $wallet)
@@ -39,7 +50,6 @@ class WalletService{
         $this->user_id = $user_id;
         return $this;
     }
-
 
     /**
      * @param mixed $balance

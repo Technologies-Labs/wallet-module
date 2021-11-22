@@ -9,15 +9,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Wallet extends Model
 {
-    use HasFactory , SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $guarded = [];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function hasBalance($amount) : bool
+    public function hasBalance($amount): bool
     {
         return  $this->balance >= $amount;
     }
@@ -30,19 +31,29 @@ class Wallet extends Model
 
     public function withdraw($amount)
     {
-        if (!$this->hasBalance($amount))
-        {
-            return response()->json([
-                'success'       => false,
-                'message'       => 'Your Balance is Not Enough',
-            ]);
+        $hasBalance = $this->hasBalance($amount);
+        if($hasBalance){
+            $this->walletWithdraw($amount);
         }
-        $this->walletWithdraw($amount);
-
         return response()->json([
-            'success'       => true,
-            'message'       => 'Done',
+            'success'       => $hasBalance,
+            'icon'          => ($hasBalance) ? 'success' : 'error',
+            'message'       => ($hasBalance) ? 'Done' : 'Your Balance is Not Enough',
         ]);
+
+        // if (!$this->hasBalance($amount))
+        // {
+        //     return response()->json([
+        //         'success'       => false,
+        //         'message'       => 'Your Balance is Not Enough',
+        //     ]);
+        // }
+        // $this->walletWithdraw($amount);
+
+        // return response()->json([
+        //     'success'       => true,
+        //     'message'       => 'Done',
+        // ]);
     }
 
     public function deposit($amount)

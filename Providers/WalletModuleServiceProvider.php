@@ -29,7 +29,7 @@ class WalletModuleServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
-        
+
         $this->app->singleton('wallet', function ($app) {
             return new WalletService();
         });

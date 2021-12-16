@@ -3,6 +3,7 @@
 namespace Modules\WalletModule\Entities;
 
 use App\Models\User;
+use Database\Factories\WalletsFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -63,5 +64,11 @@ class Wallet extends Model
             'success'       => true,
             'message'       => 'Done',
         ]);
+    }
+
+    protected static function newFactory()
+    {
+        return WalletsFactory::new();
+        
     }
 }
